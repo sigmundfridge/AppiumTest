@@ -65,33 +65,13 @@ class WalkthroughComponent extends Component {
       const screenHolderStyles = {flex: 1, width: contentWidth};
 
         return (
-        <TouchableWithoutFeedback onPress={this._goForward.bind(this)}>
-          <Animated.View style={animatedViewStyle} ref="pageHolder">
-            <View style={screenHolderStyles}>
-                <View>
-                <Text style = {styles.label1}>Label 1</Text>
+        <TouchableWithoutFeedback onPress={this._goForward.bind(this)} accessible = {true}>
+            <View style={screenHolderStyles} accessible = {true}>
+                <View accessible = {true}>
+                <Text style = {styles.label1} accessible = {true}>Label 1</Text>
                 </View>
-                <Text style = {styles.label2}>Label 2</Text>
+                <Text style = {styles.label2} accessible = {true}>Label 2</Text>
               </View>
-            <View style={screenHolderStyles}>
-            <View>
-            <Text style = {styles.label1}>Label 1</Text>
-            </View>
-            <Text style = {styles.label2}>Label 2</Text>
-          </View>
-          <View style={screenHolderStyles}>
-          <View>
-            <Text style = {styles.label1}>Label 1</Text>
-            </View>
-            <Text style = {styles.label2}>Label 2</Text>
-          </View>
-          <View style={screenHolderStyles}>
-          <View>
-            <Text style = {styles.label1}>Label 1</Text>
-            </View>
-            <Text style = {styles.label2}>Label 2</Text>
-          </View>
-        </Animated.View>
       </TouchableWithoutFeedback>
     );
     }
