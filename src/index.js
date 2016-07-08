@@ -4,44 +4,28 @@ import React, {
 import {
   View,
   StyleSheet,
-  Text
+  Text,
+  Animated
 } from 'react-native';
 
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import thunk from 'redux-thunk';
+
+import WalkthroughComponent from './components/WalkthroughComponent'
+
+import * as reducers from './reducers';
+
+const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
+const reducer = combineReducers(reducers);
+const store = createStoreWithMiddleware(reducer);
 
 export default class AxsyApp extends Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
+      <Provider store={store}>
+        <WalkthroughComponent/>
+      </Provider>
     )
  }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
