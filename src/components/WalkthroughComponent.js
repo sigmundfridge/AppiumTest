@@ -23,9 +23,11 @@ import { connect } from 'react-redux';
 import { updateLayout } from '../actions/appState';
 
 class WalkthroughComponent extends Component {
+    scrollValue: Animated.Value;
 
     constructor(props : propTypes) {
         super(props);
+        this.scrollValue = new Animated.Value(0);
     }
 
     _onLayoutChange(e) {
@@ -38,33 +40,83 @@ class WalkthroughComponent extends Component {
       }
     }
 
+    _goForward() {
+    }
 
     _renderWalkthrough() {
       const { width, height } = this.props.layout;
-//      console.log(width);
-//      console.log(height);
+
+      const contentWidth = width * 0.429;
+      const logoHeightMobile = 30 + 9 + 25;
+      const contentHeight = height * 0.596;
+
+      const totalWidth = (contentWidth) * 5;
+      const controlsWidth = contentWidth * 0.205;
+      const sideWidth = (contentWidth * 0.795) / 2;
+
+      const translateX = this.scrollValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, -totalWidth]
+      });
+
+      const marginBottom = contentHeight * 0.04;
+
+      const animatedViewStyle = {height: contentHeight - 70, width: totalWidth, flexDirection: 'row', alignSelf: 'flex-start', alignItems: 'center', transform: [{translateX}]};
+      const screenHolderStyles = {flex: 1, width: contentWidth};
+
         return (
-        <Animated.View  style = {[styles.container]} ref="pageHolder" testID = "animatedView">
-          <View>
+        <TouchableWithoutFeedback onPress={this._goForward.bind(this)}>
+          <Animated.View style={animatedViewStyle} ref="pageHolder">
+            <View style={screenHolderStyles}>
+                <View>
+                <Text style = {styles.label1}>Label 1</Text>
+                </View>
+                <Text style = {styles.label2}>Label 2</Text>
+              </View>
+            <View style={screenHolderStyles}>
             <View>
-              <Text style = {[styles.label1]} testID = "label1">
-                Label 1
-              </Text>
-              <Text style = {[styles.label2]} testID = "label1">
-                Label 2
-              </Text>
+            <Text style = {styles.label1}>Label 1</Text>
             </View>
+            <Text style = {styles.label2}>Label 2</Text>
+          </View>
+          <View style={screenHolderStyles}>
+          <View>
+            <Text style = {styles.label1}>Label 1</Text>
+            </View>
+            <Text style = {styles.label2}>Label 2</Text>
+          </View>
+          <View style={screenHolderStyles}>
+          <View>
+            <Text style = {styles.label1}>Label 1</Text>
+            </View>
+            <Text style = {styles.label2}>Label 2</Text>
           </View>
         </Animated.View>
+      </TouchableWithoutFeedback>
     );
     }
 
     render() {
-        return (
-          <View onLayout={this._onLayoutChange.bind(this)}>
-          {this._renderWalkthrough()}
+      let { width, height } = this.props.layout;
+
+      const contentWidth = width ;
+      const contentHeight = height;
+
+      const holderStyles = {
+        backgroundColor: '#fff',
+        width: contentWidth,
+        height: contentHeight,
+        borderRadius: 10,
+        marginTop: 0
+      };
+
+      return (
+        <View style = {[styles.container]} ref="container" onLayout={this._onLayoutChange.bind(this)}>
+          <View style={[styles.contentHolder, holderStyles]}>
+            {this._renderWalkthrough()}
           </View>
-        );
+        </View>
+      );
     }
 }
 
